@@ -10,9 +10,10 @@ class NewsController extends Controller
     public function index()
     {
         return view('admin.news.index', [
-            'newsList' => $this->news
+            'news' => $this->news
         ]);
     }
+    
 
     /**
      * Show the form for creating a new resource.

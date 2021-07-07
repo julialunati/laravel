@@ -21,55 +21,20 @@ Route::get('/', function () {
 });
 
 Route::get('/news', [NewsController::class, 'index'])->name('news');
-Route::get('/news/{id}', [NewsController::class, 'show'])->where('id', '\d+')->name('news.show');
-Route::get('/news/{city}', [NewsController::class, 'display'])->name('news.display');
-Route::get('/news/{city}/{id}', [NewsController::class, 'detail'])->where('id', '\d+')->name('news.detail');
+Route::get('/news/{option}', [NewsController::class, 'categorize'])->name('news.categorize');
+Route::get('/news/{option}/{id}', [NewsController::class, 'detalize'])->where('id', '\d+')->name('news.detalize');
 
 //admin
-Route::group(['prefix' => 'admin', 'as' => 'admin'], function () {
-    Route::resource('categories', CategoryController::class);
-    Route::resource('news', AdminNewsController::class);
+// Route::group(['prefix' => 'admin', 'as' => 'admin'], function () {
+//     Route::resource('categories', CategoryController::class);
+//     Route::resource('news', AdminNewsController::class);
+// });
+
+
+Route::prefix('admin')->group(function () {
+    Route::get('/news', [AdminNewsController::class, 'index'])->name('admin.news.index');
+    Route::get('/news/edit', [AdminNewsController::class, 'edit'])->name('admin.news.edit');
+    Route::get('/news/create', [AdminNewsController::class, 'create'])->name('admin.news.create');
+    Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories');
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
 });
-
-
-
-
-// Route::get('/greetings/{name}', function (string $name) {
-//     return "It's nice to meet you, {$name}!";
-// });
-
-// Route::get('/info/{project}', function (string $project) {
-//     return " {$project} is a project which carried out individually or collaboratively and possibly involving research or design, that is carefully planned (usually by a project team, but sometimes by a project manager or by a project planner) to achieve a particular aim.";
-// });
-
-// Route::get('/news/{id}', function (int $id) {
-//     switch ($id) {
-//         case 1:
-//             return "Фраза из школы: \"London is the capital of Great Britain and Northern Ireland\" некорректная";
-//             break;
-//         case 2:
-//             return "Great Britain — остров, у которого нет так называемой \"столицы\"";
-//             break;
-//         case 3:
-//             return "United Kingdom состоит из 3+1 частей: Scotland (столица Edinburgh), Wales (столица Cardiff), England (столица London). Все три они находятся на одном острове Great Britain.";
-//             break;
-//         case 4:
-//             return "В United Kingdom входит Northern Ireland (столица Belfast), которая находится на острове Ireland и граничит со страной Ireland, у которой столица Dublin, но которая не входит в UK.";
-//             break;
-//         case 5:
-//             return "Ireland и Northen Ireland — два разных государственных объекта, находящихся на одном острове, который называется Ireland.";
-//             break;
-//         default:
-//             return "Sorry! News with id $id not found!";
-//     }
-// });
-
-// Route::get('/news/', function () {
-//     return "Фраза из школы: \"London is the capital of Great Britain and Northern Ireland\" некорректная. 
-//     Great Britain — остров, у которого нет так называемой \"столицы\". 
-//     United Kingdom состоит из 3+1 частей: Scotland (столица Edinburgh), Wales (столица Cardiff), England (столица London). 
-//     Все три они находятся на одном острове Great Britain. 
-//     В United Kingdom входит Northern Ireland (столица Belfast), которая находится на острове Ireland и граничит со страной Ireland, 
-//     у которой столица Dublin, но которая не входит в UK. Ireland и Northen Ireland — два разных государственных объекта, 
-//     находящихся на одном острове, который называется Ireland.";
-// });

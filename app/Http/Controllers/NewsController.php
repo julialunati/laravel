@@ -9,33 +9,27 @@ class NewsController extends Controller
     public function index()
     {
         return view('news.index', [
-            'newsList' => $this->news,
-            'arr' => $this->arr
+            'news' => $this->news
         ]);
     }
 
-    public function show(int $id)
+    public function categorize(string $option)
     {
-        return "новость c id=$id";
-    }
-
-    public function display(string $city)
-    {
-        foreach ($this->arr as $key => $values) {
-            if ($city === $key) {
-                return view('news.display', [
-                    'key' => $key,
-                    'values' => $values
+        foreach ($this->news as $city => $facts) {
+            if ($option === $city) {
+                return view('news.category', [
+                    'city' => $city,
+                    'facts' => $facts
                 ]);
             }
         }
     }
 
-    public function detail(string $city, int $id)
+    public function detalize(string $option, int $id)
     {
-        foreach ($this->arr as $key => $values) {
-            if ($city === $key) {
-                return $values[$id - 1]['description'];
+        foreach ($this->news as $city => $facts) {
+            if ($option === $city) {
+                return $facts[$id - 1]['description'];
             }
         }
     }
