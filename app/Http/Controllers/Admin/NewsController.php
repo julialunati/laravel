@@ -13,7 +13,7 @@ class NewsController extends Controller
             'news' => $this->news
         ]);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -22,7 +22,9 @@ class NewsController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.news.create', [
+            // 'news' => $this->news
+        ]);
     }
 
     /**
@@ -33,7 +35,13 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string']
+        ]);
+
+        //чтоб получать только те данные которые необходимы (без всяких инъекций)
+        $data = $request->only(['title', 'status', 'description']);
+        dd($data);
     }
 
     /**
@@ -55,7 +63,7 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        //
+        //edit
     }
 
     /**

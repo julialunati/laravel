@@ -42,7 +42,7 @@
                             <td>{{ $fact['title'] }}</td>
                             <td>{{ $fact['description'] }}</td>
                             <td>{{ now()->format('d-m-y h:i') }}</td>
-                            <td><a href="{{ route('admin.news.edit',['id' => $loop->parent->index ]) }}">edit</a> &nbsp; | &nbsp; <a href="">delete</a></td>
+                            <td><a href="{{ route('admin.news.edit',['news' => $city, 'id' => $fact['id'] ]) }}">edit</a> &nbsp; | &nbsp; <a href="">delete</a></td>
                         </tr>
 
 

@@ -17,24 +17,25 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    // dd(request()->ip()); -- посмотреть ip-adress
+    // return redirect()->route('news');
+    return response()->json([
+        'title' => 'laravel',
+        'description' => 'framework'
+    ]);
     return view('welcome');
 });
 
 Route::get('/news', [NewsController::class, 'index'])->name('news');
+Route::get('/news/contact', [NewsController::class, 'contact'])->name('news.contact');
+Route::post('/news/store', [NewsController::class, 'store'])->name('news.store');
 Route::get('/news/{option}', [NewsController::class, 'categorize'])->name('news.categorize');
 Route::get('/news/{option}/{id}', [NewsController::class, 'detalize'])->where('id', '\d+')->name('news.detalize');
 
 //admin
-// Route::group(['prefix' => 'admin', 'as' => 'admin'], function () {
-//     Route::resource('categories', CategoryController::class);
-//     Route::resource('news', AdminNewsController::class);
-// });
-
-
-Route::prefix('admin')->group(function () {
-    Route::get('/news', [AdminNewsController::class, 'index'])->name('admin.news.index');
-    Route::get('/news/edit', [AdminNewsController::class, 'edit'])->name('admin.news.edit');
-    Route::get('/news/create', [AdminNewsController::class, 'create'])->name('admin.news.create');
-    Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories');
-    Route::get('/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::view('/', 'admin.index');
+    Route::resource('news', AdminNewsController::class);
+    Route::resource('categories', CategoryController::class);
 });
+
