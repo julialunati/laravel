@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+        dd(request()->ip());
     // dd(request()->ip()); -- посмотреть ip-adress
     // return redirect()->route('news');
     return response()->json([

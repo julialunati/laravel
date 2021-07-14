@@ -34,19 +34,17 @@
 
                     <tbody>
 
-                        @forelse ($news as $city => $facts)
-                        @foreach ($facts as $fact)
+                        @forelse ($news as $fact)
+     
                         <tr>
-                            <td>{{ $loop->parent->index }}</td>
-                            <td>{{ $city }}</td>
-                            <td>{{ $fact['title'] }}</td>
-                            <td>{{ $fact['description'] }}</td>
-                            <td>{{ now()->format('d-m-y h:i') }}</td>
-                            <td><a href="{{ route('admin.news.edit',['news' => $city, 'id' => $fact['id'] ]) }}">edit</a> &nbsp; | &nbsp; <a href="">delete</a></td>
+                            <td>{{ $fact->id }}</td>
+                            <td>{{ $fact->category }}</td>
+                            <td>{{ $fact->title }}</td>
+                            <td>{{ $fact->description }}</td>
+                            <td>{{ $fact->created_at }}</td>
+                            <td><a href="{{ route('admin.news.edit',['news' => $fact->id ]) }}">edit</a> &nbsp; | &nbsp; <a href="">delete</a></td>
                         </tr>
 
-
-                        @endforeach
 
                         @empty
 

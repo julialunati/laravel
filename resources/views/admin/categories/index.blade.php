@@ -29,10 +29,10 @@
                     </thead>
 
                     <tbody>
-                        @foreach ($news as $city=>$fact)
+                        @foreach ($categories as $category)
                         <tr>
-                            <th>{{ $loop->index }}</th>
-                            <th>{{ $city }}</th>
+                            <th>{{ $category->id }}</th>
+                            <th>{{ $category->title }}</th>
                         </tr>
                         @endforeach
 

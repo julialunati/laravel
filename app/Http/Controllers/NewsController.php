@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
@@ -9,29 +10,22 @@ class NewsController extends Controller
     public function index()
     {
         return view('news.index', [
-            'news' => $this->news
+            'categories' => $this->provideCategories()
         ]);
     }
 
-    public function categorize(string $option)
+    public function categorize(int $option)
     {
-        foreach ($this->news as $city => $facts) {
-            if ($option === $city) {
-                return view('news.category', [
-                    'city' => $city,
-                    'facts' => $facts
-                ]);
-            }
-        }
+        return view('news.category', [
+            'categoryNews' => $this->provideSpecificCategoryNews($option),
+        ]);
     }
 
-    public function detalize(string $option, int $id)
+    public function detalize(int $option, int $id)
     {
-        foreach ($this->news as $city => $facts) {
-            if ($option === $city) {
-                return $facts[$id - 1]['description'];
-            }
-        }
+        return view('news.detailed', [
+            'news' => $this->provideNewsById($id),
+        ]);
     }
 
     public function contact()
