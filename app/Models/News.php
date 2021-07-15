@@ -5,40 +5,18 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class News extends Model
 {
     protected $table = 'news';
 
-    public function getNews()
-    {
-        return DB::table($this->table)->select(['id', 'title', 'status', 'description', 'created_at'])->get();
-    }
+    protected $fillable = [
+        'category_id', 'source_id',  'title', 'status', 'description'
+    ];
 
-    public function getAllNews()
+    public function category(): BelongsTo
     {
-        return DB::table($this->table)
-        ->join('categories', 'categories.id', '=', 'category_id')
-        ->select(['news.*', 'categories.title as category'])
-        ->get();
-    }
-
-    public function getNewsById($id)
-    {
-        return DB::table($this->table)
-        ->join('sources', 'sources.id', '=', 'source_id')
-        ->select(['news.*', 'link', 'author'])
-        ->where('news.id','=',$id)
-        ->get();
-    }
-
-    public function getSpecificCategoryNews($id)
-    {
-        return DB::table($this->table)
-        ->join('categories', 'categories.id', '=', 'category_id')
-        ->select(['news.*', 'categories.title as category'])
-        ->where('category_id','=',$id)
-        ->get();
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 }

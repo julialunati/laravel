@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\News;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -9,22 +11,33 @@ class NewsController extends Controller
 {
     public function index()
     {
+    
+        $categories = Category::orderBy('id','desc')->paginate(3);
         return view('news.index', [
-            'categories' => $this->provideCategories()
+            'categories' => $categories
         ]);
     }
 
     public function categorize(int $option)
     {
+        $news = News::select(['news.*', 'categories.title as category'])
+            ->join('categories', 'categories.id', '=', 'category_id')
+            ->where('category_id', '=', $option)
+            ->get();
+
         return view('news.category', [
-            'categoryNews' => $this->provideSpecificCategoryNews($option),
+            'categoryNews' => $news,
         ]);
     }
 
     public function detalize(int $option, int $id)
     {
+        $news = News::select(['news.*', 'link', 'author'])
+            ->join('sources', 'sources.id', '=', 'source_id')
+            ->where('news.id', '=', $id)
+            ->get();
         return view('news.detailed', [
-            'news' => $this->provideNewsById($id),
+            'news' => $news,
         ]);
     }
 

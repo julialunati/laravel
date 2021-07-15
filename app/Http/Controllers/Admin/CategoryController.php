@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -11,9 +12,12 @@ class CategoryController extends Controller
 
     public function index()
     {
-    
+        $categories = Category::with('news')
+            ->select(['id', 'title', 'created_at'])
+            ->get();
+
         return view('admin.categories.index', [
-            'categories' => $this->provideCategories()
+            'categories' => $categories
         ]);
     }
 
@@ -22,10 +26,10 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     public function create()
     {
-        //
+        return view('admin.categories.create');
     }
 
     /**
@@ -36,7 +40,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = Category::create(
+            $request->only(['title'])
+        );
+
+        if ($category) {
+            return redirect()->route('admin.categories.index')->with('success', 'Category has been successfully created.');
+        }
+        return back()->with('error', 'Something went wrong.');
     }
 
     /**
@@ -56,9 +67,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        //
+        return view('admin.categories.edit', [
+            'category' => $category,
+        ]);
     }
 
     /**
@@ -68,9 +81,16 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $statusCategory = $category->fill(
+            $request->only(['title'])
+        )->save();
+
+        if ($statusCategory) {
+            return redirect()->route('admin.categories.index')->with('success', 'Category has been successfully updated.');
+        }
+        return back()->with('error', 'Something went wrong.');
     }
 
     /**

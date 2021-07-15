@@ -8,7 +8,7 @@
 <main>
     <div class="container-fluid px-4">
         <h1 class="mt-4">Categories</h1>
-        <a href="{{ route('admin.news.create') }}" class="btn btn-primary" style="float: right;">Add category</a>
+        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary" style="float: right;">Add category</a>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">List of news</li>
         </ol>
@@ -18,12 +18,16 @@
                 <i class="fas fa-table me-1"></i>
                 List of categories
             </div>
+
+            @include('notifications.success')
+
             <div class="card-body">
                 <table id="datatablesSimple">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Category</th>
+                            <th>News quantity</th>
 
                         </tr>
                     </thead>
@@ -33,6 +37,7 @@
                         <tr>
                             <th>{{ $category->id }}</th>
                             <th>{{ $category->title }}</th>
+                            <th>{{ optional($category->news)->count() }}</th>
                         </tr>
                         @endforeach
 

@@ -13,7 +13,8 @@
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active">List of news</li>
         </ol>
-
+        @include('notifications.success')
+        
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
@@ -42,7 +43,7 @@
                             <td>{{ $fact->title }}</td>
                             <td>{{ $fact->description }}</td>
                             <td>{{ $fact->created_at }}</td>
-                            <td><a href="{{ route('admin.news.edit',['news' => $fact->id ]) }}">edit</a> &nbsp; | &nbsp; <a href="">delete</a></td>
+                            <td><a href="{{ route('admin.news.edit',['news' => $fact ]) }}">edit</a> &nbsp; | &nbsp; <a href="">delete</a></td>
                         </tr>
 
 
