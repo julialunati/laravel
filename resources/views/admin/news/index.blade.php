@@ -14,7 +14,7 @@
             <li class="breadcrumb-item active">List of news</li>
         </ol>
         @include('notifications.success')
-        
+
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
@@ -35,15 +35,18 @@
 
                     <tbody>
 
-                        @forelse ($news as $fact)
-     
+                        @forelse ($newsList as $news)
+
                         <tr>
-                            <td>{{ $fact->id }}</td>
-                            <td>{{ $fact->category }}</td>
-                            <td>{{ $fact->title }}</td>
-                            <td>{{ $fact->description }}</td>
-                            <td>{{ $fact->created_at }}</td>
-                            <td><a href="{{ route('admin.news.edit',['news' => $fact ]) }}">edit</a> &nbsp; | &nbsp; <a href="">delete</a></td>
+                            <td>{{ $news->id }}</td>
+                            <td>{{ $news->category }}</td>
+                            <td>{{ $news->title }}</td>
+                            <td>{{ $news->description }}</td>
+                            <td>{{ $news->created_at }}</td>
+                            <td><a href="{{ route('admin.news.edit',['news' => $news ]) }}">edit</a>
+                                &nbsp; | &nbsp;
+                                <a href="javascript:;" class="delete" rel="{{ $news->id }}">delete</a>
+                            </td>
                         </tr>
 
 
@@ -61,3 +64,39 @@
 </main>
 
 @endsection
+
+@push('js')
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+
+        const datatablesSimple = document.getElementById('datatablesSimple');
+        if (datatablesSimple) {
+            new simpleDatatables.DataTable(datatablesSimple);
+        }
+
+        const el = document.querySelectorAll(".delete");
+        el.forEach(function(e, k) {
+            e.addEventListener('click', function() {
+                const rel = e.getAttribute("rel");
+                if (confirm("Do you confirm elimination of the element with #ID " + rel + " ?")) {
+                    submit("/admin/news/" + rel).then(() => {
+                        location.reload();
+                    })
+                }
+            });
+        })
+    });
+    async function submit(url) {
+        let response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        });
+        let result = await response.json();
+        return result.ok;
+    }
+</script>
+
+@endpush

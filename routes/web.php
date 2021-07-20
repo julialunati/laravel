@@ -17,13 +17,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-        dd(request()->ip());
     // dd(request()->ip()); -- посмотреть ip-adress
-    // return redirect()->route('news');
-    return response()->json([
-        'title' => 'laravel',
-        'description' => 'framework'
-    ]);
+    // return redirect()->route('news'); -- ридерект
+    // return response()->json([ 
+    //     'title' => 'laravel',
+    //     'description' => 'framework'
+    // ]);
     return view('welcome');
 });
 
@@ -39,4 +38,3 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::resource('news', AdminNewsController::class);
     Route::resource('categories', CategoryController::class);
 });
-

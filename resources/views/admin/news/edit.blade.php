@@ -24,6 +24,7 @@
                 <label for="title">Title</label>
                 <input type="text" class="form-control" id="title" name="title" value="{{ $news->title }}">
             </div><br>
+            @include('notifications.errorTitle')
             <div class="form-group">
                 <label for="category">Category</label>
                 <select name="category_id" id="category" class="form-control">
@@ -34,10 +35,12 @@
                     @endforeach
                 </select>
             </div><br>
+            
             <div class="form-group">
                 <label for="source">Source ID</label>
                 <input type="number" class="form-control" id="source" name="source_id" value="{{ $news->source_id }}">
             </div><br>
+            @include('notifications.errorSource')
             <div class="form-group">
                 <label for="status">Status</label>
                 <select name="status" id="status" class="form-control">

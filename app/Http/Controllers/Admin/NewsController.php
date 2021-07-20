@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewsUpdate;
+use App\Http\Requests\NewsStore;
 use Illuminate\Http\Request;
 use App\Models\News;
 use App\Models\Category;
+use Dotenv\Exception\ValidationException;
 
 class NewsController extends Controller
 {
@@ -16,7 +19,7 @@ class NewsController extends Controller
             ->get();
 
         return view('admin.news.index', [
-            'news' => $news,
+            'newsList' => $news,
         ]);
     }
 
@@ -28,9 +31,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        // $news = News::select(['news.*', 'categories.title as category'])
-        // ->join('categories', 'categories.id', '=', 'category_id')
-        // ->get();
+
         $categories = Category::select(['id', 'title', 'created_at'])->get();
         return view('admin.news.create', [
             'categories' => $categories
@@ -43,20 +44,18 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(NewsStore $request)
     {
-        $request->validate([
-            'title' => ['required', 'string']
-        ]);
 
         $news = News::create(
-            $request->only(['title', 'category_id', 'source_id', 'status', 'description'])
+            $request->only(['category_id', 'source_id', 'title', 'status', 'description'])
         );
 
         if ($news) {
-            return redirect()->route('admin.news.index')->with('success', 'News has been successfully created.');
+            return redirect()->route('admin.news.index')
+            ->with('success', __('message.admin.news.created.success'));
         }
-        return back()->with('error', 'Something went wrong.');
+        return back()->with('error', __('message.admin.news.created.fail'));
     }
 
     /**
@@ -92,26 +91,31 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(NewsUpdate $request, News $news)
     {
         $statusNews = $news->fill(
-            $request->only(['title', 'category_id', 'source_id', 'status', 'description'])
+            $request->validated()
         )->save();
 
         if ($statusNews) {
-            return redirect()->route('admin.news.index')->with('success', 'Category has been successfully updated.');
+            return redirect()->route('admin.news.index')
+                ->with('success', __('message.admin.news.updated.success'));
         }
-        return back()->with('error', 'Something went wrong.');
+        return back()->with('error', __('message.admin.news.updated.fail'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+
+    public function destroy(News $news)
     {
-        //
+        $status = $news->delete();
+        if ($status) {
+            return response()->json(['ok' => 'ok']);
+        }
     }
 }
