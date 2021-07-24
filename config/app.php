@@ -174,7 +174,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        //You should ensure this class is registered within the providers array of your application's config/app.php configuration file.
+        App\Providers\FortifyServiceProvider::class,
     ],
 
     /*

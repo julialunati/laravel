@@ -6,6 +6,10 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                 Control Panel
             </a>
+            <a class="nav-link @if(request()->is('admin.users.*')) active @endif" href="{{ route('admin.users.index') }}">
+                <div class="sb-nav-link-icon"><i class="fas fa-user-friends"></i></div>
+                Users
+            </a>
 
             <div class="sb-sidenav-menu-heading">General</div>
             <a class="nav-link @if(request()->routeIs('admin.news.*')) active @endif" href="{{ route('admin.news.index') }}">

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,8 +34,17 @@ Route::get('/news/{option}', [NewsController::class, 'categorize'])->name('news.
 Route::get('/news/{option}/{id}', [NewsController::class, 'detalize'])->where('id', '\d+')->name('news.detalize');
 
 //admin
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+Route::group([
+    'prefix' => 'admin',
+    'as' => 'admin.',
+    'middleware' => ['auth', 'is.admin']
+], function () {
     Route::view('/', 'admin.index');
     Route::resource('news', AdminNewsController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('users', UserController::class);
 });
+
+Route::get('/home', function () {
+    return view('home');
+})->middleware('auth', 'is.admin')->name('home');
