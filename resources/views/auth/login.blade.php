@@ -49,7 +49,14 @@
         <p>new user? <a href="{{ route('register') }}">create new account</a></p>
       </div>
     </form>
-
+    <!-- eneter VK -->
+    <div>
+      <a href="{{ route('social.init',['driver' => 'vkontakte'])}}">Login with VK</a>
+    </div>
+        <!-- eneter Github -->
+        <div>
+      <a href="{{ route('social.init',['driver' => 'github'])}}">Login with GITHUB</a>
+    </div>
   </div>
   <!-- end:Main Form -->
 </div>

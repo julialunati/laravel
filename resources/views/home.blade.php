@@ -18,6 +18,7 @@
             <div class="alert alert-light" role="alert">
                 Hi, {{ Auth::user()->name }}, nice to see you again!
             </div>
+
         </div>
 
     </div>

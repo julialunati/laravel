@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\ParserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\SocialController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,8 +45,21 @@ Route::group([
     Route::resource('news', AdminNewsController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('users', UserController::class);
+    Route::get('/parse', ParserController::class);
 });
+
+// Route::group(function () {
+    Route::get('/init/{driver}', [SocialController::class, 'init'])
+        ->name('social.init');
+    Route::get('/callback/{driver}', [SocialController::class, 'callback'])
+        ->name('social.callback');
+// });
 
 Route::get('/home', function () {
     return view('home');
 })->middleware('auth', 'is.admin')->name('home');
+
+
+Route::get('/account', function () {
+    return view('account');
+})->name('account');
