@@ -13,7 +13,9 @@ class SocialService implements Social
 {
     public function userInit(User $user): bool
     {
-        $userData = ModelUser::where(['email' => $user->getEmail()])->first();
+        $userData = ModelUser::where(
+            ['email' => $user->getEmail()]
+        )->first();
         if ($userData) {
             //auth user
             $userData->name = $user->getName();

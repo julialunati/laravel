@@ -17,7 +17,7 @@
 
     </div>
     <div class="container-fluid px-4">
-        <form method="post" action="{{ route('admin.news.store') }}">
+        <form method="post" action="{{ route('admin.news.store') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="title">Title</label>
@@ -33,6 +33,11 @@
                     @endforeach
                 </select>
             </div><br>
+            <div class="form-group">
+                <label for="image">Image</label>
+                <input type="file" class="form-control" id="image" name="image">
+            </div><br>
+            @include('notifications.errorImage')
             <div class="form-group">
                 <label for="source">Source ID</label>
                 <input type="number" class="form-control" id="source" name="source_id" value="{{ old('source_id') }}">

@@ -17,7 +17,7 @@
 
     </div>
     <div class="container-fluid px-4">
-        <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}">
+        <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}" enctype="multipart/form-data">
             @csrf
             @method('put')
             <div class="form-group">
@@ -35,7 +35,12 @@
                     @endforeach
                 </select>
             </div><br>
-            
+            <div class="form-group">
+                <label for="image">Image</label>
+                <input type="file" class="form-control" id="image" name="image">
+            </div><br>
+            @include('notifications.errorImage')
+
             <div class="form-group">
                 <label for="source">Source ID</label>
                 <input type="number" class="form-control" id="source" name="source_id" value="{{ $news->source_id }}">
@@ -51,7 +56,8 @@
             </div><br>
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea class="form-control" id="description" name="description">{{ $news->description }}</textarea>
+                <textarea class="form-control" id="description" name="description">
+                {{ $news->description }}</textarea>
             </div><br>
             <button type="submit" class="btn btn-primary">Save changes</button>
         </form>
@@ -59,3 +65,16 @@
 </main>
 
 @endsection
+
+@push('js')
+<script>
+    ClassicEditor
+        .create(document.querySelector('#description'))
+        .then(editor => {
+            console.log(editor);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+@endpush

@@ -10,6 +10,7 @@
             <div>
                 <h2 class="post-title">{{ $news->title }}</h2>
                 <img src="{{ $news->image }}" alt="">
+                <img src="{{ Storage::disk('public')->url($news->image) }}" alt="">
                 <p>{{ $news->description }}</p>
                 <p>Original link: {{ $news->link }}</p>
                 <p>Author: {{ $news->author }}</p>

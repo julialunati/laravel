@@ -28,6 +28,7 @@ class NewsStore extends FormRequest
             'category_id' => ['required', 'integer', 'min:1'],
             'source_id' => ['required', 'integer', 'min:1'],
             'status' => ['required'],
+            'image' => ['sometimes'],
             'description' => ['sometimes'],
         ];
     }

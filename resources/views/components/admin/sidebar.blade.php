@@ -10,6 +10,10 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-user-friends"></i></div>
                 Users
             </a>
+            <a class="nav-link @if(request()->is('laravel-filemanager.*')) active @endif" href="/laravel-filemanager">
+                <div class="sb-nav-link-icon"><i class="fas fa-folder-open"></i></div>
+                File manager
+            </a>
 
             <div class="sb-sidenav-menu-heading">General</div>
             <a class="nav-link @if(request()->routeIs('admin.news.*')) active @endif" href="{{ route('admin.news.index') }}">

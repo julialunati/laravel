@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
+use App\Jobs\NewsJob;
 use Illuminate\Http\Request;
 use App\Contracts\Parser;
 use App\Http\Controllers\Controller;
@@ -14,23 +15,23 @@ class ParserController extends Controller
 {
     public function __invoke(Parser $parser)
     {
-        $arr = $parser->getParsedList("https://news.yandex.ru/football.rss");
+        $urls = [
+            'https://news.yandex.ru/auto.rss',
+            'https://news.yandex.ru/gadgets.rss',
+            'https://news.yandex.ru/communal.rss',
+            'https://news.yandex.ru/health.rss',
+            'https://news.yandex.ru/games.rss',
+            'https://news.yandex.ru/internet.rss',
+            'https://news.yandex.ru/movies.rss',
+            'https://news.yandex.ru/cosmos.rss',
+            'https://news.yandex.ru/culture.rss',
+            'https://news.yandex.ru/music.rss',
+        ];
 
-        // сохранение информации с открытого источника
-        $category = Category::create(
-            ['title' => $arr['title']]
-        );
-
-        foreach ($arr['news'] as $news){
-            News::create([
-                'category_id' => $category->id,
-                'source_id' => 1,
-                'title' => $news['title'],
-                'status' => 'draft',
-                'description' => $news['description'],
-                ]);
+        foreach ($urls as $url) {
+            dispatch(new NewsJob($url));
         }
-
-        return redirect()->route('admin.news.index')->with('success');
+        return redirect()->route('admin.news.index')
+        ->with('success', 'News has been downloaded successfully');
     }
 }

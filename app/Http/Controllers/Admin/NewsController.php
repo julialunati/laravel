@@ -23,7 +23,6 @@ class NewsController extends Controller
         ]);
     }
 
-
     /**
      * Show the form for creating a new resource.
      *
@@ -44,14 +43,25 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(NewsStore $request)
+    public function store(NewsStore $request, News $news)
     {
 
-        $news = News::create(
-            $request->only(['category_id', 'source_id', 'title', 'status', 'description'])
-        );
+        $data = $request->validated();
 
-        if ($news) {
+        if($request->hasFile('image')) {
+			$file = $request->file('image');
+			$fileName = md5($file->getClientOriginalName() . time());
+			$fileExt = $file->getClientOriginalExtension();
+			$newFileName = $fileName . "." . $fileExt;
+			$data['image'] = $file->storeAs('news', $newFileName, 'public');
+		}
+        $statusNews = $news->fill($data)->save();
+
+        // $statusNews = News::create(
+        //     $request->only(['category_id', 'source_id', 'title', 'status', 'description', 'image'])
+        // );
+
+        if ($statusNews) {
             return redirect()->route('admin.news.index')
             ->with('success', __('message.admin.news.created.success'));
         }
@@ -93,9 +103,21 @@ class NewsController extends Controller
      */
     public function update(NewsUpdate $request, News $news)
     {
-        $statusNews = $news->fill(
-            $request->validated()
-        )->save();
+        $data = $request->validated();
+
+        if($request->hasFile('image')) {
+			$file = $request->file('image');
+            // dd($file);
+            //получим имя файла
+			$fileName = md5($file->getClientOriginalName() . time());
+            //получим расширение файла
+			$fileExt = $file->getClientOriginalExtension();
+            //новое имя файла
+			$newFileName = $fileName . "." . $fileExt;
+
+			$data['image'] = $file->storeAs('news', $newFileName, 'public');
+		}
+        $statusNews = $news->fill($data)->save();
 
         if ($statusNews) {
             return redirect()->route('admin.news.index')

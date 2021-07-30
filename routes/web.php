@@ -48,12 +48,12 @@ Route::group([
     Route::get('/parse', ParserController::class);
 });
 
-// Route::group(function () {
-    Route::get('/init/{driver}', [SocialController::class, 'init'])
-        ->name('social.init');
-    Route::get('/callback/{driver}', [SocialController::class, 'callback'])
-        ->name('social.callback');
-// });
+
+Route::get('/init/{driver}', [SocialController::class, 'init'])
+    ->name('social.init');
+Route::get('/callback/{driver}', [SocialController::class, 'callback'])
+    ->name('social.callback');
+
 
 Route::get('/home', function () {
     return view('home');
@@ -63,3 +63,7 @@ Route::get('/home', function () {
 Route::get('/account', function () {
     return view('account');
 })->name('account');
+
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});
