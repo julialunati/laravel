@@ -8,6 +8,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SocialController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\TestNotificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -67,3 +68,7 @@ Route::get('/account', function () {
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
+
+
+//notification test
+Route::get('/notify', [TestNotificationController::class, 'sendTestNotification'])->name('notify');

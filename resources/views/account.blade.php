@@ -12,3 +12,13 @@
 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
     @csrf
 </form>
+
+<!-- линк -->
+<div>
+    <a href="{{ route('notify') }}">Notify me!</a>
+</div><br>
+
+<!-- кнопка -->
+<form method="get" action="{{ route('notify') }}">
+    <button type="submit">Continue</button>
+</form>
